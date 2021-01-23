@@ -10,23 +10,26 @@ public class ObserverScript : MonoBehaviour
     public GameObject[] objects;
     private List<DataEntry> DataEntries = new List<DataEntry>(10000);
     private bool output = true;
+    private CubeOneMovement cube;
     // Start is called before the first frame update
     void Start()
     {
         objects = GameObject.FindGameObjectsWithTag("CubeObject");
+        cube = FindObjectOfType<CubeOneMovement>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(objects[0].name + " rotation: " + objects[0].transform.rotation.ToString());
-        Debug.Log(objects[1].name + " rotation: " + objects[1].transform.rotation.ToString());
-        Debug.Log(objects[0].name + " position: " + objects[0].transform.position.ToString());
-        Debug.Log(objects[1].name + " position: " + objects[1].transform.position.ToString());
+        //Debug.Log(objects[0].name + " rotation: " + objects[0].transform.rotation.ToString());
+        //Debug.Log(objects[1].name + " rotation: " + objects[1].transform.rotation.ToString());
+        //Debug.Log(objects[0].name + " position: " + objects[0].transform.position.ToString());
+        //Debug.Log(objects[1].name + " position: " + objects[1].transform.position.ToString());
+        Debug.Log("Observer Update");
 
         if (DataEntries.Count < DataEntries.Capacity)
         {
-            DataEntries.Add(new DataEntry(objects[0].transform, objects[1].transform, false));
+            DataEntries.Add(new DataEntry(objects[0].transform, objects[1].transform, cube.IsColliding));
         }
         if (DataEntries.Count == DataEntries.Capacity && output)
         {
@@ -52,8 +55,8 @@ public class ObserverScript : MonoBehaviour
     {
         var fileString = new StringBuilder("PositionA_X,PositionA_Y,PositionA_Z," + 
             "PositionB_X,PositionB_Y,PositionB_Z," + 
-            "RotationA_X,RotationA_Y,RotationA_Z," + 
-            "RotationB_X,RotationB_Y,RotationB_Z," + 
+            "RotationA_X,RotationA_Y,RotationA_Z,RotationA_W," +
+            "RotationB_X,RotationB_Y,RotationB_Z,RotationB_W," + 
             "IsColliding");
         foreach(var entry in DataEntries)
         {
@@ -69,10 +72,12 @@ public class ObserverScript : MonoBehaviour
             fileString.Append(entry.RotationA_X.ToString()).Append(",");
             fileString.Append(entry.RotationA_Y.ToString()).Append(",");
             fileString.Append(entry.RotationA_Z.ToString()).Append(",");
+            fileString.Append(entry.RotationA_W.ToString()).Append(",");
 
             fileString.Append(entry.RotationB_X.ToString()).Append(",");
             fileString.Append(entry.RotationB_Y.ToString()).Append(",");
             fileString.Append(entry.RotationB_Z.ToString()).Append(",");
+            fileString.Append(entry.RotationB_W.ToString()).Append(",");
 
             fileString.Append(entry.IsColliding.ToString()).Append(",");
         }
@@ -92,10 +97,12 @@ public class ObserverScript : MonoBehaviour
         public float RotationA_X;
         public float RotationA_Y;
         public float RotationA_Z;
+        public float RotationA_W;
 
         public float RotationB_X;
         public float RotationB_Y;
         public float RotationB_Z;
+        public float RotationB_W;
 
         public bool IsColliding;
 
@@ -117,10 +124,12 @@ public class ObserverScript : MonoBehaviour
             RotationA_X = cubeOne.rotation.x;
             RotationA_Y = cubeOne.rotation.y;
             RotationA_Z = cubeOne.rotation.z;
+            RotationA_W = cubeOne.rotation.w;
 
             RotationB_X = cubeTwo.rotation.x;
             RotationB_Y = cubeTwo.rotation.y;
             RotationB_Z = cubeTwo.rotation.z;
+            RotationB_W = cubeTwo.rotation.w;
 
             IsColliding = isColliding;
         }
