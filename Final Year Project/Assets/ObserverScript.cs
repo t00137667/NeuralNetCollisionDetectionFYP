@@ -14,6 +14,7 @@ public class ObserverScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Application.targetFrameRate = 50;
         objects = GameObject.FindGameObjectsWithTag("CubeObject");
         cube = FindObjectOfType<CubeOneMovement>();
     }
@@ -56,7 +57,9 @@ public class ObserverScript : MonoBehaviour
         var fileString = new StringBuilder("PositionA_X,PositionA_Y,PositionA_Z," + 
             "PositionB_X,PositionB_Y,PositionB_Z," + 
             "RotationA_X,RotationA_Y,RotationA_Z,RotationA_W," +
-            "RotationB_X,RotationB_Y,RotationB_Z,RotationB_W," + 
+            "RotationB_X,RotationB_Y,RotationB_Z,RotationB_W," +
+            "ScaleA_X,ScaleA_Y,ScaleA_Z," +
+            "ScaleB_X,ScaleB_Y,ScaleB_Z," +
             "IsColliding");
         foreach(var entry in DataEntries)
         {
@@ -78,6 +81,14 @@ public class ObserverScript : MonoBehaviour
             fileString.Append(entry.RotationB_Y.ToString()).Append(",");
             fileString.Append(entry.RotationB_Z.ToString()).Append(",");
             fileString.Append(entry.RotationB_W.ToString()).Append(",");
+
+            fileString.Append(entry.ScaleA_X.ToString()).Append(",");
+            fileString.Append(entry.ScaleA_Y.ToString()).Append(",");
+            fileString.Append(entry.ScaleA_Z.ToString()).Append(",");
+
+            fileString.Append(entry.ScaleB_X.ToString()).Append(",");
+            fileString.Append(entry.ScaleB_Y.ToString()).Append(",");
+            fileString.Append(entry.ScaleB_Z.ToString()).Append(",");
 
             fileString.Append(entry.IsColliding.ToString()).Append(",");
         }
@@ -103,6 +114,14 @@ public class ObserverScript : MonoBehaviour
         public float RotationB_Y;
         public float RotationB_Z;
         public float RotationB_W;
+
+        public float ScaleA_X;
+        public float ScaleA_Y;
+        public float ScaleA_Z;
+
+        public float ScaleB_X;
+        public float ScaleB_Y;
+        public float ScaleB_Z;
 
         public bool IsColliding;
 
@@ -130,6 +149,14 @@ public class ObserverScript : MonoBehaviour
             RotationB_Y = cubeTwo.rotation.y;
             RotationB_Z = cubeTwo.rotation.z;
             RotationB_W = cubeTwo.rotation.w;
+
+            ScaleA_X = cubeOne.localScale.x;
+            ScaleA_Y = cubeOne.localScale.y;
+            ScaleA_Z = cubeOne.localScale.z;
+
+            ScaleB_X = cubeTwo.localScale.x;
+            ScaleB_Y = cubeTwo.localScale.y;
+            ScaleB_Z = cubeTwo.localScale.z;
 
             IsColliding = isColliding;
         }

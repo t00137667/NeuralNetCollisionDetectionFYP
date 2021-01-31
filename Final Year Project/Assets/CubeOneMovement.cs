@@ -5,12 +5,14 @@ using UnityEngine;
 public class CubeOneMovement : MonoBehaviour
 {
     public bool IsColliding;
+    private bool isGrowing;
     private bool Towards = true;
     public Vector3 origin = new Vector3(0, 0, 0);
     // Start is called before the first frame update
     void Start()
     {
         IsColliding = false;
+        isGrowing = true;
     }
 
     // Update is called once per frame
@@ -22,6 +24,7 @@ public class CubeOneMovement : MonoBehaviour
         }
         RotationFunction();
         MovementFunction();
+        ScaleFunction();
     }
 
     void RotationFunction()
@@ -33,6 +36,7 @@ public class CubeOneMovement : MonoBehaviour
         Vector3 eulerAngles = new Vector3(x, y, z) * Time.deltaTime;
 
         transform.Rotate(eulerAngles, Space.Self);
+        transform.RotateAround(origin, Vector3.up, 30 * Time.deltaTime);
     }
 
     void MovementFunction()
@@ -41,18 +45,43 @@ public class CubeOneMovement : MonoBehaviour
         {
             Towards = false;
         }
-        if (Vector3.Distance(transform.position, origin) > 5f)
+        if (Vector3.Distance(transform.position, origin) > 2.5f)
         {
             Towards = true;
         }
         if (Towards)
         {
-            transform.position = Vector3.MoveTowards(transform.position, origin, 1 * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, origin, 0.5f * Time.deltaTime);
         }
         else
         {
-            transform.position = Vector3.MoveTowards(transform.position, origin, -1 * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, origin, -0.5f * Time.deltaTime);
         }
+    }
+
+    void ScaleFunction()
+    {
+        //float scaleX = Random.Range(0.1f, 1f);
+        //float scaleY = Random.Range(0.1f, 1f);
+        //float scaleZ = Random.Range(0.1f, 1f);
+
+        //Vector3 scaleChange = new Vector3(scaleX, scaleY, scaleZ);
+        Vector3 scaleChange = new Vector3(0.2f, 0.2f, 0.2f); 
+
+        if (transform.localScale.x > 2.5f || transform.localScale.x < 0.1f)
+        {
+            isGrowing = !isGrowing;
+        }
+
+        if (isGrowing)
+        {
+            transform.localScale += scaleChange * Time.deltaTime;
+        }
+        else
+        {
+            transform.localScale += -scaleChange * Time.deltaTime;
+        }
+        
     }
 
 
